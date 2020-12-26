@@ -1,0 +1,4 @@
+
+# METODOLOGÍA DE COMPUTACIÓN: PRÁCTICAS
+
+INTEGRANTES DEL GRUPO: Almudena Luque Gómez, Ignacio Yuste López
