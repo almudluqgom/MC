@@ -41,8 +41,8 @@ int main()
     //Una vez finaliza el análisis imprimimos el resultado
     printf("\nNo. espacios=%d", sc); 
     printf("\nNo. tabulaciones=%d", tc); 
-  	printf("\nNo. palabras=%d", wc); 
-	  printf("\nNo. lineas=%d\n", lc); 
+    printf("\nNo. palabras=%d", wc); 
+    printf("\nNo. lineas=%d\n", lc); 
     
     return 0; 
 } 
