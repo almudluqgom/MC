@@ -1,60 +1,86 @@
 
-/*Código Lex para contar palabras, líneas, espacios y tabulaciones de un texto dado*/
+/**
+    Programa reconocedor de letras
+**/
 
 %{ 
-#include<stdio.h> 
-#include<string.h> 
+    #include<stdio.h> 
+    #include<string.h> 
+    #include<stdlib.h>
+    #include<ctype.h>
+    
+    const char cod_numeros[5]= {'O','I','U','E','A'};	//A-4 E-3 I-1 O-0 U-2
 
-/*Contadores globales*/
-int  sc=0, tc=0, wc=0,lc=0;
-int pbuscada=0;
-char palabra[10];
-%} 
-  
-/*Seccion de reglas*/
-%% 
-([a-zA-Z0-9])*    {
-	wc++;
-	if (strcmp(yytext, palabra) == 0)
-		pbuscada++;
+    char letra;
+    int contador = 0;
+    char sustituto[30],aux;
+    FILE *yyout, *yyin;
 
-} // Contador de palabras
-
-([ ])+ {
-	sc++;
-} // Contador de espacios
-
-\t {
-	tc++;
-} // Contador de tabuladores
-
-\n {
-	lc++;
-} // Contador de línea
+    int descodificar = 0;
+%}
 
 %% 
-  
+[*]{8} {
+	descodificar = 1;
+}
 
-int main(int argc, char ** argv) 
-{ 
-	strcpy(palabra,argv[1]);
+[aeiouAEIOU] {
+	int i = 0;
+	int encontrado = 0;
+	for(; i<5 && encontrado==0; i++){
+		encontrado = cod_numeros[i] == toupper(yytext[0]);
+		printf("%c\n",cod_numeros[i] );
+	}
+	char char_cod = i - '0';
+	printf("%c-",yytext[0]);
+	printf("%c\n", char_cod);
+	fputc(char_cod, yyout);
+}
 
-	extern FILE *yyin, *yyout; 
-  
-    // yyin apunta al archivo Input.txt y lo abre en modo lectura
-    yyin = fopen("Input.txt", "r"); 
-    
-    // yylex comienza el análisis del texto
-    yylex(); 
-    
-    //Una vez finaliza el análisis imprimimos el resultado
-    printf("No. espacios=%d", sc); 
-    printf("\nNo. tabulaciones=%d", tc); 
-  	printf("\nNo. palabras=%d", wc); 
-	printf("\nNo. lineas=%d", lc);
-	printf("\nNo. palabra buscada=%d", pbuscada);
-	float freq = (float)pbuscada/(float)wc*100;
-	printf("\nFreq. palabra buscada=%.2f%c\n",freq,'%');
-    
-    return 0; 
-} 
+[^aeiouAEIOU01234\t\n\b] {
+	
+	if(!descodificar){
+		char char_cod = yytext[0] + 64;
+		fputc(char_cod, yyout);		
+	}
+	else{
+		char char_cod = yytext[0] - 64;
+		fputc(char_cod, yyout);
+	}
+}
+
+[0-4] {
+	char char_cod = cod_numeros[atoi(yytext)];
+	fputc(char_cod, yyout);
+}
+
+\b {fputc('\b', yyout);}
+\t {fputc('\t', yyout);}
+\n {fputc('\n', yyout);}
+
+%% 
+
+int main(int argc, char** argv){ 
+
+	if(argc!=3){
+		printf("ERROR: El formato es ArchivoEntrada ArchivoSalida\n");
+		exit(0);
+	}
+
+	yyin = fopen(argv[1], "r");
+	
+	if(!yyin){
+		printf("ERROR: El archivo %s no se abrió correctamente\n", argv[1]);
+		exit(0);	
+	} 
+
+	yyout = fopen(argv[2],"w");
+
+	if(!yyout){
+		printf("ERROR: El archivo %s no se abrió correctamente\n", argv[2]);
+		exit(0);	
+	}
+
+	yylex(); 
+	return 0;
+}
