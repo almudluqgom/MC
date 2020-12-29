@@ -1,13 +1,3 @@
-//*****************************************************************************//
-//																			   //
-//	PRÁCTICA 2 MODELOS DE COMPUTACIÓN                                          //
-//																			   //
-//	CODIFICADOR-DECODIFICADOR LEX											   //
-//																			   //
-//	ALMUDENA LUQUE GÓMEZ													   //
-//	IGNACIO YUSTE LÓPEZ														   //
-//																			   //
-//*****************************************************************************//
 
 %{ 
     #include<stdio.h> 
@@ -59,6 +49,17 @@
 \n {fputc('\n', yyout);}
 
 %% 
+
+//*****************************************************************************//
+//																			   //
+//	PRÁCTICA 2 MODELOS DE COMPUTACIÓN                                          //
+//																			   //
+//	CODIFICADOR-DECODIFICADOR LEX											   //
+//																			   //
+//	ALMUDENA LUQUE GÓMEZ													   //
+//	IGNACIO YUSTE LÓPEZ														   //
+//																			   //
+//*****************************************************************************//
 
 /*
 -REGLAS LEX:
