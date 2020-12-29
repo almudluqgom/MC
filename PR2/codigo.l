@@ -1,39 +1,28 @@
 
-/**
-    Programa reconocedor de letras
-**/
-
 %{ 
     #include<stdio.h> 
     #include<string.h> 
     #include<stdlib.h>
     #include<ctype.h>
     
-    const char cod_numeros[5]= {'O','I','U','E','A'};	//A-4 E-3 I-1 O-0 U-2
+    const char cod_numeros[5]= {'o','i','u','e','a'};	//A-4 E-3 I-1 O-0 U-2
 
     char letra;
     int contador = 0;
     char sustituto[30],aux;
     FILE *yyout, *yyin;
 
-    int descodificar = 0;
+    int descodificar;
 %}
 
 %% 
-[*]{8} {
-	descodificar = 1;
-}
-
 [aeiouAEIOU] {
-	int i = 0;
+	int i;
 	int encontrado = 0;
-	for(; i<5 && encontrado==0; i++){
-		encontrado = cod_numeros[i] == toupper(yytext[0]);
-		printf("%c\n",cod_numeros[i] );
+	for(i=0; i<5 && encontrado==0; i++){
+		encontrado = cod_numeros[i] == tolower(yytext[0]);
 	}
-	char char_cod = i - '0';
-	printf("%c-",yytext[0]);
-	printf("%c\n", char_cod);
+	char char_cod = i-1 +'0';
 	fputc(char_cod, yyout);
 }
 
@@ -62,8 +51,8 @@
 
 int main(int argc, char** argv){ 
 
-	if(argc!=3){
-		printf("ERROR: El formato es ArchivoEntrada ArchivoSalida\n");
+	if(argc!=4){
+		printf("ERROR: El formato es ArchivoEntrada ArchivoSalida 0(codificar)/1(descodificar)\n");
 		exit(0);
 	}
 
@@ -81,6 +70,14 @@ int main(int argc, char** argv){
 		exit(0);	
 	}
 
+	descodificar = atoi(argv[3]);
+
 	yylex(); 
+
+	if(descodificar)
+		printf("El archivo ha sido descodificado\n");
+	else
+		printf("El archivo ha sido codificado\n");
+	
 	return 0;
 }
