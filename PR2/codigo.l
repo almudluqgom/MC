@@ -15,7 +15,7 @@
     int descodificar;
 %}
 
-%% 
+%%
 [aeiouAEIOU] {
 	int i;
 	int encontrado = 0;
@@ -48,6 +48,22 @@
 \n {fputc('\n', yyout);}
 
 %% 
+
+/*
+1ºRegla: [aeiouAEIOU] 
+	Codifica/Descodifica las vocales y los escribe en el fichero de salida
+
+2ºRegla: [^aeiouAEIOU01234\t\n\b] 
+	Codifica/Descodifica cualquier caracter excepto vocales, números, espacios, tabuladores y saltos de línea
+	y los escribe en el fichero de salida
+
+3ºRegla: [0-4]
+	Codifica/Descodifica los números y los escribe en el fichero de salida
+	
+4º,5º,6º Reglas: \b \t \n
+	Introduce los espacios, tabuladores y saltos de linea sin modificar en el fichero de salida
+
+*/
 
 int main(int argc, char** argv){ 
 
