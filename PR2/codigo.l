@@ -19,7 +19,6 @@
 
     char letra;
     int contador = 0;
-    char sustituto[30],aux;
     FILE *yyout, *yyin;
 
     int decodificar;
