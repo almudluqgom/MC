@@ -11,7 +11,7 @@
     int contador = 0;
     FILE *yyout, *yyin;
 
-    int decodificar;
+    int descodificar;
 %}
 
 %%
@@ -29,7 +29,7 @@
 
 [^aeiouAEIOU01234\t\n\b] {
 	
-	if(!decodificar){
+	if(!descodificar){
 		char char_cod = yytext[0] + 64;
 		fputc(char_cod, yyout);		
 	}
@@ -82,7 +82,7 @@
 int main(int argc, char** argv){ 
 
 	if(argc!=4){
-		printf("ERROR: El formato es ArchivoEntrada ArchivoSalida 0(codificar)/1(decodificar)\n");
+		printf("ERROR: El formato es ArchivoEntrada ArchivoSalida 0(codificar)/1(descodificar)\n");
 		exit(0);
 	}
 
@@ -100,12 +100,12 @@ int main(int argc, char** argv){
 		exit(0);	
 	}
 
-	decodificar = atoi(argv[3]);
+	descodificar = atoi(argv[3]);
 
-	//Codificar/decodificar archivo
+	//Codificar/descodificar archivo
 	yylex(); 
 
-	if(decodificar)
+	if(descodificar)
 		printf("El archivo ha sido descodificado\n");
 	else
 		printf("El archivo ha sido codificado\n");
